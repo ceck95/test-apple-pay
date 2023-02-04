@@ -4,12 +4,12 @@ services:
   proxy:
     image: traefik:2.3
     ports:
-      - 8080:80
+      - 5000:80
     command: 
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
     labels:
-      - traefik.enable=false
+        - traefik.enable=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -17,6 +17,6 @@ services:
     build: 
       context: .
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.web.rule=Host(`apple.tranvannhut.com`)
-      - traefik.http.services.web.loadbalancer.server.port=3000
+        - traefik.enable=true
+        - traefik.http.routers.web.rule=Host(`apple.tranvannhut.com`)
+        - traefik.http.services.web.loadbalancer.server.port=3000
