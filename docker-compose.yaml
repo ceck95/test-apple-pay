@@ -6,6 +6,8 @@ services:
       context: .
     networks:
       - public
+    volumes:
+      - ./:/app
     labels:
       - traefik.enable=true
       - traefik.http.routers.apple-http.rule=Host(`apple.tranvannhut.com`)
