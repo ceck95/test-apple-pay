@@ -9,11 +9,12 @@
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.3.0",
-    "serve": "^14.2.0"
+    "serve": "^14.2.0",
+    "static-server": "^2.2.1"
   },
   "scripts": {
     "start:dev": "react-scripts start",
-    "start": "http-server ./build",
+    "start": "static-server ./build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
