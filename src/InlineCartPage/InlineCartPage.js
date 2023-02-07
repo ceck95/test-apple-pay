@@ -58,8 +58,9 @@ class InlineCartPage extends React.Component {
             {this.state.alertMessage}
           </div>
         )}
+        <p>Button apple pay</p>
          <div id="applepaybutton"></div>
-        <form onSubmit={this.handleSubmit}>
+        {/* <form onSubmit={this.handleSubmit}>
           <div>
             <input
               type="text"
@@ -94,7 +95,7 @@ class InlineCartPage extends React.Component {
           >
             Submit
           </button>
-        </form>
+        </form> */}
       </div>
     );
   }
