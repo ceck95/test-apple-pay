@@ -18,16 +18,131 @@ class InlineCartPage extends React.Component {
   }
 
   componentDidMount() {
+    // window.CollectJS.configure({
+    //   variant: 'inline',
+    //   country:"US",
+    //   price:"1.00",
+    //   currency:"USD",
+    //   callback: (token) => {
+    //     console.log(token);
+    //     this.finishSubmit(token)
+    //   },
+    // });
     window.CollectJS.configure({
-      variant: 'inline',
-      country:"US",
-      price:"1.00",
-      currency:"USD",
-      callback: (token) => {
-        console.log(token);
-        this.finishSubmit(token)
+      'paymentSelector' : '#customPayButton',
+       "fields": {
+          "ccnumber": {
+              "selector": "#demoCcnumber",
+              "title": "Card Number",
+              "placeholder": "0000 0000 0000 0000"
+          },
+          "ccexp": {
+              "selector": "#demoCcexp",
+              "title": "Card Expiration",
+              "placeholder": "00 / 00"
+          },
+          "cvv": {
+              "display": "show",
+              "selector": "#demoCvv",
+              "title": "CVV Code",
+              "placeholder": "***"
+          },
+          "checkaccount": {
+              "selector": "#demoCheckaccount",
+              "title": "Account Number",
+              "placeholder": "0000000000"
+          },
+          "checkaba": {
+              "selector": "#demoCheckaba",
+              "title": "Routing Number",
+              "placeholder": "000000000"
+          },
+          "checkname": {
+              "selector": "#demoCheckname",
+              "title": "Name on Checking Account",
+              "placeholder": "Customer McCustomerface"
+          },
+          "googlePay": {
+              "selector": ".googlePayButton",
+              "shippingAddressRequired": true,
+              "shippingAddressParameters": {
+                  "phoneNumberRequired": true,
+                  "allowedCountryCodes": ['US', 'CA']
+              },
+              "billingAddressRequired": true,
+              "billingAddressParameters": {
+                  "phoneNumberRequired": true,
+                  "format": "MIN"
+              },
+              'emailRequired': true,
+              'buttonType': 'buy',
+              'buttonColor': 'white',
+              'buttonLocale': 'en'
+          },
+          'applePay' : {
+              'selector' : '.applePayButton',
+              'shippingMethods': [
+                  {
+                      'label': 'Free Standard Shipping',
+                      'amount': '0.00',
+                      'detail': 'Arrives in 5-7 days',
+                      'identifier': 'standardShipping'
+                  },
+                  {
+                      'label': 'Express Shipping',
+                      'amount': '10.00',
+                      'detail': 'Arrives in 2-3 days',
+                      'identifier': 'expressShipping'
+                  }
+              ],
+              'shippingType': 'delivery',
+              'requiredBillingContactFields': [
+                  'postalAddress',
+                  'name'
+              ],
+              'requiredShippingContactFields': [
+                  'postalAddress',
+                  'name'
+              ],
+              'contactFields': [
+                  'phone',
+                  'email'
+              ],
+              'contactFieldsMappedTo': 'shipping',
+              'lineItems': [
+                  {
+                      'label': 'Foobar',
+                      'amount': '3.00'
+                  },
+                  {
+                      'label': 'Arbitrary Line Item #2',
+                      'amount': '1.00'
+                  }
+              ],
+              'totalLabel': 'foobar',
+              'type': 'buy',
+              'style': {
+                  'button-style': 'white-outline',
+                  'height': '50px',
+                  'border-radius': '0'
+              }
+          }
       },
-    });
+      "price": "1.00",
+      "currency":"USD",
+      "country": "US",
+      "variant": "inline",
+      "callback" : function(response) {
+          alert(response.token);
+          var input = document.createElement("input");
+          input.type = "hidden";
+          input.name = "payment_token";
+          input.value = response.token;
+          var form = document.getElementsByTagName("form")[0];
+          form.appendChild(input);
+          form.submit();
+      }
+  });
   }
 
   finishSubmit(response) {
@@ -59,9 +174,7 @@ class InlineCartPage extends React.Component {
           </div>
         )}
         <p>Button apple pay</p>
-        <form action="submit_to_direct_post_api.php" method="post">
-            <div id="applepaybutton"></div>
-        </form>
+        <div className="googlePayButton"></div>
         {/* <form onSubmit={this.handleSubmit}>
           <div>
             <input
@@ -98,6 +211,7 @@ class InlineCartPage extends React.Component {
             Submit
           </button>
         </form> */}
+        
       </div>
     );
   }
