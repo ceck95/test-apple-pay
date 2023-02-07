@@ -19,8 +19,6 @@ class InlineCartPage extends React.Component {
 
   componentDidMount() {
     window.CollectJS.configure({
-      variant: 'inline',
-      styleSniffer: true,
       country:"US",
       price:"1.00",
       currency:"USD",
