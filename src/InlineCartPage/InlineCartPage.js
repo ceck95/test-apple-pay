@@ -1,5 +1,5 @@
 import React from 'react';
-import CollectJSSection from "./CollectJSSection";
+// import CollectJSSection from "./CollectJSSection";
 import {Link} from "react-router-dom";
 
 class InlineCartPage extends React.Component {
@@ -59,7 +59,9 @@ class InlineCartPage extends React.Component {
           </div>
         )}
         <p>Button apple pay</p>
-         <div id="applepaybutton"></div>
+        <form action="submit_to_direct_post_api.php" method="post">
+            <div id="applepaybutton"></div>
+        </form>
         {/* <form onSubmit={this.handleSubmit}>
           <div>
             <input
