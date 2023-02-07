@@ -174,7 +174,7 @@ class InlineCartPage extends React.Component {
           </div>
         )}
         <p>Button apple pay</p>
-        <div className="googlePayButton"></div>
+        <div className="applePayButton"></div>
         {/* <form onSubmit={this.handleSubmit}>
           <div>
             <input
