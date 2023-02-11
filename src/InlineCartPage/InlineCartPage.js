@@ -25,6 +25,7 @@ class InlineCartPage extends React.Component {
       currency:"USD",
       callback: (token) => {
         console.log(token);
+        console.log(JSON.stringify(token));
         this.finishSubmit(token)
       },
     });
