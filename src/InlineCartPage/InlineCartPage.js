@@ -15,6 +15,7 @@ class InlineCartPage extends React.Component {
     this.setState = this.setState.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.finishSubmit = this.finishSubmit.bind(this);
+    this.payment = this.payment.bind(this);
   }
 
   componentDidMount() {
@@ -23,10 +24,10 @@ class InlineCartPage extends React.Component {
       country:"US",
       price:"1.00",
       currency:"USD",
-      callback: (token) => {
-        console.log(token);
-        console.log(JSON.stringify(token));
-        this.finishSubmit(token)
+      callback: (data) => {
+        console.log(data);
+        console.log(JSON.stringify(data));
+        this.payment(data.token)
       },
     });
   }
@@ -39,9 +40,25 @@ class InlineCartPage extends React.Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    // event.preventDefault();
+    // this.setState({ isSubmitting: true });
+    // window.CollectJS.startPaymentRequest();
+  }
+
+  payment(token){
     this.setState({ isSubmitting: true });
-    window.CollectJS.startPaymentRequest();
+    fetch('http://localhost:56103/test/apple-pay',{
+      body: {token},
+      method: "POST"
+    }).then((data) => {
+      return data.json()
+    }).then(res => {
+      console.log("🚀 ~ InlineCartPage ~ res", res)
+      this.setState({ isSubmitting: false, alertMessage: 'The form was submitted. Check the console to see the output data.' });
+    }).catch(error => {
+      console.log("🚀 ~ InlineCartPage ~ error", error)
+      this.setState({ isSubmitting: false, alertMessage: 'Error payment' });
+    })
   }
 
   render() {
