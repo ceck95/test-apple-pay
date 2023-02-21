@@ -47,7 +47,7 @@ class InlineCartPage extends React.Component {
 
   payment(token){
     this.setState({ isSubmitting: true });
-    fetch('https://79cf-88-195-47-64.eu.ngrok.io/test/apple-pay',{
+    fetch('https://2281-88-195-47-64.eu.ngrok.io/test/apple-pay',{
       body: JSON.stringify({token}),
       headers: { 'Content-Type': 'application/json' },
       method: "POST"
