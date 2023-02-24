@@ -27,7 +27,7 @@ class InlineCartPage extends React.Component {
       callback: (data) => {
         console.log(data);
         console.log(JSON.stringify(data));
-        this.payment(data.token)
+        this.payment(data)
       },
     });
   }
@@ -45,10 +45,10 @@ class InlineCartPage extends React.Component {
     // window.CollectJS.startPaymentRequest();
   }
 
-  payment(token){
+  payment(data){
     this.setState({ isSubmitting: true });
     fetch('https://2281-88-195-47-64.eu.ngrok.io/test/apple-pay',{
-      body: JSON.stringify({token}),
+      body: JSON.stringify(data),
       headers: { 'Content-Type': 'application/json' },
       method: "POST"
     }).then((data) => {
