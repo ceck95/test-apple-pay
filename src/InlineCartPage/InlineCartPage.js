@@ -1,21 +1,26 @@
 import React from 'react';
 // import CollectJSSection from "./CollectJSSection";
 import {Link} from "react-router-dom";
+import queryString from "querystring";
 
 class InlineCartPage extends React.Component {
   constructor(props) {
     super(props);
+    const {local} = queryString.parse(this.props.location.search);
     this.state = {
       firstName: '',
       lastName: '',
       amount: '',
       isSubmitting: false,
       alertMessage: '',
+      // isFakePayment: this.props.location.search !== "",
+      // isFakePayment: true,
+      url: local ? "http://localhost:56103" : "https://api-staging.kiolyn.com"
     };
     this.setState = this.setState.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.finishSubmit = this.finishSubmit.bind(this);
     this.payment = this.payment.bind(this);
+    this.paymentFake = this.paymentFake.bind(this);
   }
 
   componentDidMount() {
@@ -39,15 +44,10 @@ class InlineCartPage extends React.Component {
     this.setState({ isSubmitting: false, alertMessage: 'The form was submitted. Check the console to see the output data.' });
   }
 
-  handleSubmit(event) {
-    // event.preventDefault();
-    // this.setState({ isSubmitting: true });
-    // window.CollectJS.startPaymentRequest();
-  }
-
   payment(data){
     this.setState({ isSubmitting: true });
-    fetch('https://2281-88-195-47-64.eu.ngrok.io/test/apple-pay',{
+    const {orderId,storeId} = this.props.match.params;
+    fetch(`${this.state.url}/app/ordering/${storeId}/apple-wallet/${orderId}`,{
       body: JSON.stringify(data),
       headers: { 'Content-Type': 'application/json' },
       method: "POST"
@@ -58,6 +58,24 @@ class InlineCartPage extends React.Component {
       this.setState({ isSubmitting: false, alertMessage: 'The form was submitted. Check the console to see the output data.' });
     }).catch(error => {
       console.log("🚀 ~ InlineCartPage ~ error", error)
+      this.setState({ isSubmitting: false, alertMessage: 'Error payment' });
+    })
+  }
+
+  paymentFake(){
+    const {orderId,storeId} = this.props.match.params;
+    fetch(`${this.state.url}/app/ordering/${storeId}/apple-wallet/${orderId}`,{
+      body: JSON.stringify({
+        token: "test",
+        number: "1234"
+      }),
+      headers: { 'Content-Type': 'application/json' },
+      method: "POST"
+    }).then((data) => {
+      return data.json()
+    }).then(res => {
+      this.setState({ isSubmitting: false, alertMessage: 'The form was submitted. Check the console to see the output data.' });
+    }).catch(error => {
       this.setState({ isSubmitting: false, alertMessage: 'Error payment' });
     })
   }
@@ -80,43 +98,7 @@ class InlineCartPage extends React.Component {
         <p>Button apple pay</p>
         <div id="applepaybutton"></div>
         <div id="googlepaybutton"></div>
-        {/* <form onSubmit={this.handleSubmit}>
-          <div>
-            <input
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              onChange={event => this.setState({ firstName: event.target.value })}
-              value={this.state.firstName}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              onChange={event => this.setState({ lastName: event.target.value })}
-              value={this.state.lastName}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              name="amount"
-              placeholder="Amount"
-              onChange={event => this.setState({ amount: event.target.value })}
-              value={this.state.amount}
-            />
-          </div>
-          <CollectJSSection />
-          <button
-            type="submit"
-            disabled={this.state.isSubmitting}
-          >
-            Submit
-          </button>
-        </form> */}
-        
+        <button onClick={()=>this.paymentFake()}>Fake apple pay</button>
       </div>
     );
   }
